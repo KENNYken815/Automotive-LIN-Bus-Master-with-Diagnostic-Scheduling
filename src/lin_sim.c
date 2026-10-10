@@ -1,0 +1,3 @@
+#include "lin_sim.h"
+#include <string.h>
+void lin_sim_respond(lin_slave_t*s,const lin_frame_t*q,lin_frame_t*r,bool*has,uint64_t now){if(has)*has=false;if(!s||!q||!r||!has||!s->present)return;if(q->id==0x3Cu||q->id==0x3Du){*has=true;return;}if(q->id!=s->node_id)return;uint8_t data[LIN_MAX_DATA]={0};if(s->kind==LIN_SLAVE_BODY){data[0]=(uint8_t)(s->value&0xFF);data[1]=(uint8_t)(s->value>>8);data[2]=s->last_command;}else if(s->kind==LIN_SLAVE_THERMAL){data[0]=(uint8_t)(s->value&0xFF);data[1]=(uint8_t)(s->value>>8);data[2]=0xA1;}else{data[0]=(uint8_t)(s->value&0xFF);data[1]=(uint8_t)(s->value>>8);data[2]=s->last_command;}if(lin_encode_frame(r,q->id,data,3,true)==LIN_OK){r->timestamp_us=now+s->response_delay_us;*has=true;}}
