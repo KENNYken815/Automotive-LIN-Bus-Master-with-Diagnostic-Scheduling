@@ -124,7 +124,7 @@ Clean compiled artifacts:
 
 ## Hardware Integration: UART/LIN
 
-A physical STM32 or NXP implementation must supply the controller-specific hardware layer to:
+The current reference implementation uses three simulated slave nodes. A physical STM32 or NXP implementation must supply the controller-specific hardware layer to:
 - generate a LIN break and `0x55` sync byte followed by the protected identifier;
 - transmit/receive with UART LIN mode or timer/UART support;
 - use interrupts/DMA for frame bytes;
