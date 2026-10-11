@@ -48,9 +48,9 @@ An Embedded C reference implementation of a deterministic LIN master for automot
 - Recovery continues to the next configured slot.
 
 ### Diagnostics
-- Diagnostic request construction on master request ID `0x3C`.
-- Example service/data payload support.
-- Diagnostic request counter.
+- Diagnostic request construction on master request ID `0x3C` using the classic checksum.
+- Diagnostic payload layout modeled as NAD, PCI length, service ID, and service data; targeted requests use the selected simulated slave's node ID.
+- Diagnostic request counter. The scheduled diagnostic slot uses a sample broadcast NAD (`0x7E`); diagnostic slave responses are not simulated.
 
 ### Python tools
 - `tools/lin_traffic_sim.py` generates repeatable schedule traces and can simulate a missing slave.
@@ -137,7 +137,7 @@ The portable model does not generate the electrical break waveform. Confirm exac
 
 ## Test and Measurement Plan
 
-Software tests cover PID validation, checksums, successful slave response, missing-slave timeout, schedule continuation and diagnostic frame construction. Hardware measurements should include:
+Software tests are provided for PID validation, checksums, successful slave response, missing-slave timeout, schedule continuation and diagnostic payload construction. Run `make test` locally to execute them; this session verified repository contents but did not run the build. Hardware measurements should include:
 - header break/sync/PID timing;
 - slot-start jitter;
 - response latency;
